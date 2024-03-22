@@ -3,17 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document </title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>backend masters</title>
 </head>
 <body>
-    Hello, <%= data %>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="/courses">Courses</a></li>
+            <li class="nav-item"><a class="nav-link" href="/workshops">Workshops</a></li>
+            <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+        </ul>
+        <ul class="navbar-nav">
+            <% if (sessionActive) { %>
+                <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
+            <% } %>
+            <% if (!sessionActive) { %>
+                <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
+                <li class="nav-item"><a class="nav-link" href="/register">Register</a></li>
+            <% } %>
+        </ul>
+    </nav>
 
-    <form action="/submit" method="post">
-        <label for="name">name</label>
-        <input type="text" name="name" placeholder="Enter your name">
-        <label for="email">email</label>
-        <input type="email" name="email" placeholder="Enter your email">
-        <button type="submit">Submit</button>
-    </form>
+    <% if (sessionActive) { %>
+        <div class="container mt-5">
+            <h1>Welcome to Backend Masters</h1>
+            <p>Learn backend development with Node.js, Express, and MongoDB</p>
+            <p>the count is <%= variable %></p>
+        </div>
+    <% } %>
+
+
+    <% if (!sessionActive) { %>
+        <div class="container mt-5">
+            <h1>Welcome to Backend Masters</h1>
+            <p>Learn backend development with Node.js, Express, and MongoDB</p>
+            <p>join us now by logging in </p>
+            <a class="btn btn-primary" href="/register">Register</a>
+        </div>
+    <% } %>
 </body>
 </html>

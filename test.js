@@ -6,10 +6,15 @@ const database = 'backend_masters';
 
 const client = new MongoClient(databaseURL);
 
-client.connect((err) => {
-    if (err) {
-        console.log(err);
-    } else {
-        console.log('Connected to the database');
-    }
-});
+emailExists("kevin@gmail.com")
+
+
+async function emailExists(email) {
+    await client.connect();
+    const db = await client.db(database);
+    const collection = await db.collection("user_details");
+    const document = await collection.findOne({ email: email });
+    console.log(document);
+    return document;
+}
+

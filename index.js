@@ -50,44 +50,43 @@ app.get('/', (req, res) => {
 // });
 
 app.get('/register',(req,res)=>{
-    res.render("register")
+    res.render("register");
 })
 
-app.post('/register',(req,res)=>{
-    const {name,email, password} = req.body;
-    client.connect((err) => {
-        if (err) {
-            console.log(err);
-            return;
-        }
-        console.log(`connected successfully to database`);
-    });
-    const db = client.db(database);
-    const collection = db.collection("user_details");
-    collection.findOne({email: email},(err,document)=>{
-        if(err){
-            console.log(err);
-            return;
-        }
-        else{
-            if(document){
-                res.send('User already exists');
-                return;
-            }
-            collection.insertOne({name,email,password},(err,result)=>{
-                if(err){
-                    console.log(err);
-                    return;
-                }
-                console.log(result);
-                res.redirect('/');
-            })
-        res.redirect('/');
-        }
-    });
+app.post('/register', async (req, res) => {
+    const { name, email, password } = req.body;
+    if (await emailExists(email) === false) {
+        await addEmail(name, email, password);
+        return res.redirect('/register');
+    }
+    return res.redirect('/');
 });
+
+
+
+async function emailExists(email) {
+    await client.connect();
+    const db = await client.db(database);
+    const collection = await db.collection("user_details");
+    const document = await collection.findOne({ email: email });
+    console.log(document);
+    if (document === null) {
+        return false;
+    }
+    return true;
+}
+
+
+async function addEmail(name,email, password) {
+    await client.connect();
+    const db = await client.db(database);
+    const collection = await db.collection("user_details");
+    const document = await collection.insertOne({ name: name, email: email, password: password });
+    console.log("inserted sucessfully");
+    return;
+}
 
 
 app.listen(port,()=>{
     console.log(`app running at http://localhost:${port}`);
-})
+});

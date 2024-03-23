@@ -5,6 +5,7 @@ const MongoClient = require("mongodb").MongoClient;
 const port = 3000;
 const expressSession = require('express-session');
 const bodyParser = require('body-parser');
+const session = require('express-session');
 
 const databaseURL = 'mongodb://localhost:27017';
 const database = 'backend_masters';
@@ -42,12 +43,23 @@ app.get('/', (req, res) => {
     let variable = req.session.variable || 0;
     req.session.variable = variable + 1;
 
-    res.render("index", { sessionActive, variable });
+    res.render("index", { sessionUser:req.session.user, variable });
 });
 
-// app.get('/login',checkSession,(req,res)=>{
+app.get('/login',(req,res)=>{
+    res.render("login");
+});
 
-// });
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    if (await emailExists(email) === false) {
+        return res.redirect('/login');
+    }
+    else{
+        req.session.user = email;
+        return res.redirect('/');
+    }
+});
 
 app.get('/register',(req,res)=>{
     res.render("register");
@@ -62,6 +74,10 @@ app.post('/register', async (req, res) => {
     return res.redirect('/');
 });
 
+app.get('/logout', (req, res) => {
+    req.session.destroy();
+    res.redirect('/');
+});
 
 
 async function emailExists(email) {

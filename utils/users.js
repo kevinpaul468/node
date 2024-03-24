@@ -9,7 +9,6 @@ async function emailExists(email) {
     const db = await client.db(database);
     const collection = await db.collection("user_details");
     const document = await collection.findOne({ email: email });
-    console.log(document);
     if (document === null) {
         return false;
     }
@@ -26,4 +25,16 @@ async function addEmail(name,email, password) {
     return;
 }
 
-module.exports = { emailExists, addEmail };
+
+async function verified(email, password) {
+    await client.connect();
+    const db = await client.db(database);
+    const collection = await db.collection("user_details");
+    const document = await collection.findOne({email: email});
+    if(document.password === password){
+        return true;
+    }
+    return false;
+}
+
+module.exports = { emailExists, addEmail, verified };

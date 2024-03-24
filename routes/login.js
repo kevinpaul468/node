@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const {emailExists} = require('../utils/emails.js');
+const {emailExists, verified} = require('../utils/users.js');
 const checkSession = require('../utils/checkSession.js');
 
 router.get('/login',checkSession,(req,res)=>{
@@ -14,10 +14,16 @@ router.post('/login', async (req, res) => {
         return res.redirect('/login');
     }
     else{
-        req.session.user = email;
-        return res.redirect('/');
+        if(await verified(email,password) === true){
+            req.session.user = email;
+            return res.redirect('/');
+        }
+        else{
+            return res.redirect('/login');
+        }
     }
 });
 
+    
 
 module.exports = router;

@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const { addEmail, emailExists } = require('../utils/emails.js');
+const { addEmail, emailExists } = require('../utils/users.js');
 const checkSession = require('../utils/checkSession.js');
 
 router.get('/register',checkSession,(req,res)=>{

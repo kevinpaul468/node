@@ -11,6 +11,9 @@ const app = express();
 
 const login = require('../routes/login');
 const register = require('../routes/register');
+const courses = require('../routes/courses');
+const workshops = require('../routes/workshops');
+const community = require('../routes/community');
 
 app.set('view engine', 'ejs');
 app.set("views", path.join(__dirname,'../templates'));
@@ -25,8 +28,11 @@ app.use(
     }
 ));
 
-app.use(login)
-app.use(register)
+app.use(login);
+app.use(register);
+app.use(courses);
+app.use(workshops);
+app.use(community);
 
 
 

@@ -17,30 +17,7 @@
         <ul class="navbar-nav">
             <% if (sessionUser) { %>
                 <li class="nav-item"><a class="nav-link" href="/profile">Profile</a></li>
-            <% } %>
-            <% if (sessionUser) { %>
-                <li class="nav-item"><a class="nav-<h1>Q&A Page</h1>
-                    <form action="/postQuestion" method="POST">
-                        <label for="question">Ask a question:</label>
-                        <textarea id="question" name="question" rows="4" cols="50"></textarea>
-                        <br>
-                        <button type="submit">Submit</button>
-                    </form>
-            
-                    <h2>Questions:</h2>
-                    <% questions.forEach(function(question) { %>
-                        <div>
-                            <h3><%= question.title %></h3>
-                            <p><%= question.content %></p>
-                            <form action="/postAnswer" method="POST">
-                                <input type="hidden" name="questionId" value="<%= question.id %>">
-                                <label for="answer">Your Answer:</label>
-                                <textarea id="answer" name="answer" rows="4" cols="50"></textarea>
-                                <br>
-                                <button type="submit">Submit Answer</button>
-                            </form>
-                        </div>
-                    <% }) %>link" href="/logout">logout</a></li>
+                <li class="nav-item"><a class="nav-link" href="/logout">Logout</a></li>
             <% } %>
             <% if (!sessionUser) { %>
                 <li class="nav-item"><a class="nav-link" href="/login">Login</a></li>
